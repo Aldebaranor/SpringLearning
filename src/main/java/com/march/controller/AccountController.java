@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.NotNull;
 
 @RestController
 public class AccountController {
@@ -37,7 +37,7 @@ public class AccountController {
         User user = userService.getOne(new QueryWrapper<User>().eq("username",loginDto.getUsername()));
         Assert.notNull(user,"用户不存在");
 
-        if(user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))){
+        if(!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))){
             return Result.fail("密码不正确");
         }
         String jwt = jwtUtils.generateToken(user.getId());
