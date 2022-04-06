@@ -8,7 +8,6 @@ import com.march.common.lang.Result;
 import com.march.entity.User;
 import com.march.service.UserService;
 import com.march.util.JwtUtils;
-import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-//import javax.validation.constraints.NotNull;
+
 
 @RestController
 public class AccountController {
@@ -37,7 +36,8 @@ public class AccountController {
         User user = userService.getOne(new QueryWrapper<User>().eq("username",loginDto.getUsername()));
         Assert.notNull(user,"用户不存在");
 
-        if(!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))){
+        if(!SecureUtil.md5(user.getPassword()).equals(SecureUtil.md5(loginDto.getPassword()))){
+//            UPDATE m_user set PASSWORD=MD5(PASSWORD)
             return Result.fail("密码不正确");
         }
         String jwt = jwtUtils.generateToken(user.getId());
@@ -58,6 +58,6 @@ public class AccountController {
     @RequestMapping("/logout")
     public Result logout(){
         SecurityUtils.getSubject().logout();
-        return null;
+        return Result.succ("注销成功！");
     }
 }

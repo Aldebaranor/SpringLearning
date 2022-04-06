@@ -17,11 +17,13 @@ import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.Filter;
+
 @Configuration
 public class ShiroConfig {
     @Autowired
